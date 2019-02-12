@@ -16,5 +16,8 @@
   "license": "ISC",
   "dependencies": {
     "katex": "^0.10.0"
+  },
+  "bin": {
+    "katexify": "index.js"
   }
 }

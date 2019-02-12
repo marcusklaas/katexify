@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 const katex = require('katex');
 const fs = require('fs').promises;
 const path = require('path');
