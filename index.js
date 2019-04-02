@@ -22,13 +22,19 @@ const walk = async (dir, filelist = []) => {
     return filelist;
 }
 
+const skippedElements = ['script', 'style', 'pre'];
+
 const walkTree = (node) => {
+    if (skippedElements.includes(node.tagName)) {
+        return node;
+    }
+
     // text node
     if (node.nodeType === 3) {
         // replace katex sequences inside text
         node.rawText = node.rawText
-            .replace(/\$\$(.*?)\$\$/g, (outer, inner) => katex.renderToString(inner, { displayMode: true }))
-            .replace(/\$(.*?)\$/g, (outer, inner) => katex.renderToString(inner, { displayMode: false }));
+            .replace(/\$\$(.*?)\$\$/sg, (outer, inner) => katex.renderToString(inner, { displayMode: true }))
+            .replace(/\$(.*?)\$/sg, (outer, inner) => katex.renderToString(inner, { displayMode: false }));
     } else {
         // walk children
         node.childNodes.forEach(walkTree);
@@ -41,7 +47,12 @@ const walkTree = (node) => {
 const katexifyFile = async (filePath) => {
     if (path.extname(filePath).toLowerCase() == '.html') {
         const contents = await fs.readFile(filePath, 'utf8');
-        const root = parser.parse(contents);
+        const root = parser.parse(contents, {
+            lowerCaseTagName: true,
+            script: true,
+            style: true,
+            pre: true,
+        });
         const katexifiedContents = walkTree(root).toString();
 
         await fs.writeFile(filePath, katexifiedContents);

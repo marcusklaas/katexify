@@ -2,9 +2,30 @@
 <html lang="en">
     <head>
         <meta charSet="utf-8"/>
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.10.0/dist/katex.min.css" integrity="sha384-9eLZqc9ds8eNjO3TmqPeYcDj8n+Qfa4nuSiGYa6DjLNcv9BtN69ZIulL9+8CqC9Y" crossorigin="anonymous">
+        <style>
+            body:before {
+                content: "$";
+            }
+            /* don't katexify this! */
+            body:after {
+                content: "$";
+            }
+        </style>
+        <script>
+            const yolo = 'swag';
+            const swag = 'fosho';
+            // don't katexify this!
+            const foo = `${yolo} ${swag}`;
+        </script>
     </head>
     <body>
-        Lorum ipsum. Let $x$ be a variable and $$\Sigma_{i = 0}^n i = \frac{n(n-1)}{2}$$ a formula.
+        <div class="please katexify">
+            Let $x$ be a variable and $$\Sigma_{i = 0}^n i = \frac{n(n-1)}{2}$$ a formula.
+            Also replace when delimiters are on different lines:
+            $$
+                \Sigma_x {f^2(x)} \leq \left({ \Sigma_x f(x)}\right)^2
+            $$
+        </div>
+        <span id="$$-big-moneyz-$$">don't katexify attributes!</span>
     </body>
 </html>
