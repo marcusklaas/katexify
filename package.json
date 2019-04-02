@@ -10,12 +10,14 @@
     "katex",
     "math",
     "latex",
-    "rendering"
+    "rendering",
+    "html"
   ],
   "author": "Marcus Klaas <mail@marcusklaas.nl>",
   "license": "ISC",
   "dependencies": {
-    "katex": "^0.10.0"
+    "katex": "^0.10.0",
+    "node-html-parser": "^1.1.13"
   },
   "bin": {
     "katexify": "index.js"

@@ -3,6 +3,7 @@
 const katex = require('katex');
 const fs = require('fs').promises;
 const path = require('path');
+const parser = require('node-html-parser');
 
 const walk = async (dir, filelist = []) => {
     const files = await fs.readdir(dir);
@@ -21,12 +22,27 @@ const walk = async (dir, filelist = []) => {
     return filelist;
 }
 
+const walkTree = (node) => {
+    // text node
+    if (node.nodeType === 3) {
+        // replace katex sequences inside text
+        node.rawText = node.rawText
+            .replace(/\$\$(.*?)\$\$/g, (outer, inner) => katex.renderToString(inner, { displayMode: true }))
+            .replace(/\$(.*?)\$/g, (outer, inner) => katex.renderToString(inner, { displayMode: false }));
+    } else {
+        // walk children
+        node.childNodes.forEach(walkTree);
+    }
+
+    // return self so we can chain
+    return node;
+};
+
 const katexifyFile = async (filePath) => {
     if (path.extname(filePath).toLowerCase() == '.html') {
         const contents = await fs.readFile(filePath, 'utf8');
-        const katexifiedContents = 
-            contents.replace(/\$\$(.*?)\$\$/g, (outer, inner) => katex.renderToString(inner, { displayMode: true }))
-                .replace(/\$(.*?)\$/g, (outer, inner) => katex.renderToString(inner, { displayMode: false }));
+        const root = parser.parse(contents);
+        const katexifiedContents = walkTree(root).toString();
 
         await fs.writeFile(filePath, katexifiedContents);
         console.log(`Katexified ${filePath}`);
