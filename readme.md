@@ -4,15 +4,19 @@ Recursively walks a filesystem, katexifying all html files in its path. Turns `$
 
 ## Usage
 
+Run test suite:
 ```bash
-npm install
-node index.js <dir>
+npm test
 ```
 
-## Link as command line script
+Simple usage without installation:
+```
+node bin/index.js <dir>
+```
+
+## Installation
 
 ```bash
-npm install
-sudo npm link
+sudo npm install -g
 katexify <dir>
 ```

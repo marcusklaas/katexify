@@ -1,17 +1,15 @@
 {
-  "name": "katex-experiments",
-  "version": "0.0.1",
+  "name": "katexify",
+  "version": "0.1.0",
   "description": "script to parse html and render math equations server side",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
+  "main": "bin/index.js",
   "keywords": [
     "katex",
     "math",
     "latex",
     "rendering",
-    "html"
+    "html",
+    "postprocessing"
   ],
   "author": "Marcus Klaas <mail@marcusklaas.nl>",
   "license": "ISC",
@@ -19,7 +17,13 @@
     "katex": "^0.10.0",
     "node-html-parser": "^1.1.13"
   },
+  "scripts": {
+    "test": "mocha"
+  },
   "bin": {
-    "katexify": "index.js"
+    "katexify": "bin/index.js"
+  },
+  "devDependencies": {
+    "mocha": "^6.0.2"
   }
 }
