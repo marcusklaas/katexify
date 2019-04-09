@@ -40,25 +40,31 @@ describe('katexify', () => {
     });
 
     it('should skip script tags', () => {
-        const input = '<html><head><script>$swagger</script></head></html>';
+        const input = '<html><head><script>$swagger$</script></head></html>';
         const expected = input;
         assert.equal(katexify(input), expected);
     });
 
     it('should skip style tags', () => {
-        const input = '<html><head><style>$swagger</style></head></html>';
+        const input = '<html><head><style>$swagger$</style></head></html>';
         const expected = input;
         assert.equal(katexify(input), expected);
     });
 
     it('should skip pre tags', () => {
-        const input = '<html><body><pre><code>$swagger</code></pre></body></html>';
+        const input = '<html><body><pre><code>$swagger$</code></pre></body></html>';
         const expected = input;
         assert.equal(katexify(input), expected);
     });
 
     it('shouldn\'t mess with attributes', () => {
         const input = '<html><body><a href="$YOLO$">swag</a></body></html>';
+        const expected = input;
+        assert.equal(katexify(input), expected);
+    });
+
+    it('should deal ok with doctypes', () => {
+        const input = `<!doctype html><html></html>`;
         const expected = input;
         assert.equal(katexify(input), expected);
     });
