@@ -11,18 +11,20 @@ describe('katexify', () => {
 
     it('should not match escaped displays', () => {
         const input = String.raw`\$$yolo$$`;
-        const expected = `\\$${yoloTranslation}$`;
+        const expected = `$${yoloTranslation}$`;
         assert.equal(katexify(input), expected);
     });
 
     it('should not match escaped starting dollers', () => {
         const input = String.raw`I had 5\$. I gave you 3$. How many dollers do I have now?`;
-        assert.equal(katexify(input), input);
+        const expected = String.raw`I had 5$. I gave you 3$. How many dollers do I have now?`;
+        assert.equal(katexify(input), expected);
     });
 
     it('should not match escaped ending delimiters', () => {
         const input = String.raw`I had 5$. I gave you 3\$. How many dollers do I have now?`;
-        assert.equal(katexify(input), input);
+        const expected = String.raw`I had 5$. I gave you 3$. How many dollers do I have now?`;
+        assert.equal(katexify(input), expected);
     });
 
     it('should handle escaped dollers inside a katex string', () => {
@@ -34,7 +36,7 @@ describe('katexify', () => {
 
     it('should match dollers preceded by escaped backslashes', () => {
         const input = String.raw`In latex displays, you can end a line with \\$yolo$`;
-        const expected = String.raw`In latex displays, you can end a line with \\${yoloTranslation}`;
+        const expected = `In latex displays, you can end a line with \\${yoloTranslation}`;
         assert.equal(katexify(input), expected);
     });
 
