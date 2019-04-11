@@ -9,6 +9,29 @@ describe('katexify', () => {
         assert(yoloTranslation.includes('katex'));
     });
 
+    it('should not match escaped starting dollers', () => {
+        const input = String.raw`I had 5\$. I gave you 3$. How many dollers do I have now?`;
+        assert.equal(katexify(input), input);
+    });
+
+    it('should not match escaped ending delimiters', () => {
+        const input = String.raw`I had 5$. I gave you 3\$. How many dollers do I have now?`;
+        assert.equal(katexify(input), input);
+    });
+
+    it('should handle escaped dollers inside a katex string', () => {
+        const input = String.raw`Formula: $f(x) = \$ + \$$`;
+        const katexified = katexify(input);
+        assert(katexified.startsWith('Formula: <span'));
+        assert(katexified.endsWith('</span>'));
+    });
+
+    it('should match dollers preceded by escaped backslashes', () => {
+        const input = String.raw`In latex displays, you can end a line with \\$yolo$`;
+        const expected = String.raw`In latex displays, you can end a line with \\${yoloTranslation}`;
+        assert.equal(katexify(input), expected);
+    });
+
     it('should differentiate between normal and display latex', () => {
         assert.notEqual(yoloTranslation, displayYoloTranslation);
         assert(displayYoloTranslation.includes('display'));
