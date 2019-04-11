@@ -9,6 +9,12 @@ describe('katexify', () => {
         assert(yoloTranslation.includes('katex'));
     });
 
+    it('should not match escaped displays', () => {
+        const input = String.raw`\$$yolo$$`;
+        const expected = `\\$${yoloTranslation}$`;
+        assert.equal(katexify(input), expected);
+    });
+
     it('should not match escaped starting dollers', () => {
         const input = String.raw`I had 5\$. I gave you 3$. How many dollers do I have now?`;
         assert.equal(katexify(input), input);
