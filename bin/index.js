@@ -4,6 +4,8 @@ const katexify = require('../lib/katexify');
 const fs = require('fs').promises;
 const path = require('path');
 
+const allowedFileExtensions = ['.html', '.md'];
+
 const walk = async (dir, filelist = []) => {
     const files = await fs.readdir(dir);
 
@@ -22,7 +24,7 @@ const walk = async (dir, filelist = []) => {
 }
 
 const katexifyFile = async filePath => {
-    if (path.extname(filePath).toLowerCase() == '.html') {
+    if (allowedFileExtensions.indexOf(path.extname(filePath).toLowerCase()) >= 0) {
         const contents = await fs.readFile(filePath, 'utf8');
         await fs.writeFile(filePath, katexify(contents));
         console.log(`Katexified ${filePath}`);
