@@ -70,6 +70,16 @@ describe('katexify', () => {
         assert.equal(katexify(input).replace(/\n/g, ''), expected);
     });
 
+    it('should work with HTML elements', () => {
+        const input = `$yolo$
+            <div> $$yolo$$ $ </div>
+            dont display this! $`;
+        const expected = `${yoloTranslation}
+            <div> ${displayYoloTranslation} $ </div>
+            dont display this! $`;
+        assert.equal(katexify(input), expected);
+    });
+
     it('should skip script tags', () => {
         const input = '<html><head><script>$swagger$</script></head></html>';
         const expected = input;
